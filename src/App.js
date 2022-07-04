@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./components/Header";
+import List from "./components/List";
+import Map from "./components/Map";
+import { getPlacesData } from './api'
+import { useEffect, useState } from "react";
 
 function App() {
+
+  const [places, setPlaces] = useState([])
+  const [coordinates, setCoordinates] = useState({})
+  const [bounds, setBounds] = useState({});
+  const [clickedPlace, setClickedPlace] = useState(null)
+  
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(( { coords: {latitude, longitude} }) => {
+      setCoordinates({ lat: latitude, lng: longitude});
+    })
+  }, []);
+
+  useEffect(() => {
+    console.log(coordinates, bounds);
+
+    getPlacesData(bounds.sw, bounds.ne)
+      .then((data) => {
+        setPlaces(data)
+      })
+  }, [coordinates, bounds]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App px-2 lg:px-10 py-4 mx-auto max-h-screen overflow-hidden">
+      <div className="grid grid-cols-3 gap-3">
+        <Header />
+        <List places={places} clickedPlace={clickedPlace} />
+        <Map 
+          coordinates={coordinates} 
+          setCoordinates={setCoordinates} 
+          setBounds={setBounds} 
+          places={places}
+          setClickedPlace={setClickedPlace}
+        />
+      </div>
     </div>
   );
 }
