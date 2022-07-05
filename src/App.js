@@ -10,6 +10,9 @@ function App() {
   const [coordinates, setCoordinates] = useState({})
   const [bounds, setBounds] = useState({});
   const [clickedPlace, setClickedPlace] = useState(null)
+  const [isLoading, setLoading] = useState(false)
+  const [type, setType] = useState('restaurants')
+  const {rating, setRating} = useState('')
   
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(( { coords: {latitude, longitude} }) => {
@@ -18,19 +21,21 @@ function App() {
   }, []);
 
   useEffect(() => {
+    setLoading(true)
     console.log(coordinates, bounds);
 
-    getPlacesData(bounds.sw, bounds.ne)
+    getPlacesData(type, bounds.sw, bounds.ne)
       .then((data) => {
         setPlaces(data)
+        setLoading(false)
       })
-  }, [coordinates, bounds]);
+  }, [type, coordinates, bounds]);
 
   return (
     <div className="App px-2 lg:px-10 py-4 mx-auto max-h-screen overflow-hidden">
       <div className="grid grid-cols-3 gap-3">
-        <Header />
-        <List places={places} clickedPlace={clickedPlace} />
+        <Header setType={setType} rating={rating} setRating={setRating} />
+        <List places={places} clickedPlace={clickedPlace} isLoading={isLoading} />
         <Map 
           coordinates={coordinates} 
           setCoordinates={setCoordinates} 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import { Autocomplete } from '@react-google-maps/api';
 
-const Header = () => {
+const Header = ({ setType}) => {
   const {rating, setRating} = useState('')
   return (
     <div className='col-span-full row-span-1'>
@@ -9,12 +9,12 @@ const Header = () => {
         <div className='bg-amber-600 stroke relative bg-opacity-20 p-5 my-3 flex flex-col gap-3 items-start'>
           {/* <div className='stoke bg-teal-900'></div> */}
           <div className='flex gap-3 z-20 items-center font-content font-medium'>
-            <button className='px-3 py-2 md:px-5 md:py-3 bg-white'>Resturants</button>
-            <button className='px-3 py-2 md:px-5 md:py-3 bg-white'>Hotels</button>
-            <button className='px-3 py-2 md:px-5 md:py-3 bg-white'>Attractions</button>
+            <button className='px-3 py-2 md:px-5 md:py-3 bg-white' onClick={() => setType('restaurants')}>Resturants</button>
+            <button className='px-3 py-2 md:px-5 md:py-3 bg-white' onClick={() => setType('hotels')}>Hotels</button>
+            <button className='px-3 py-2 md:px-5 md:py-3 bg-white' onClick={() => setType('attractions')}>Attractions</button>
             <select name="Rating" value={rating} onChange={e => setRating(e.target.value)} id="rating" className='px-3 outline-none py-2 md:px-5 md:py-3'>
               <optgroup>
-                <option value={0}>All</option>
+                <option value={0}>Rating</option>
                 <option value={4.5}>Above 4.5</option>
                 <option value={4}>Above 4.0</option>
                 <option value={3}>Above 3.0</option>

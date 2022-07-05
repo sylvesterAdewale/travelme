@@ -1,7 +1,10 @@
 import React from 'react';
 import Rating from "@material-ui/lab/Rating";
 
-const ListDetails = ({place}) => {
+const ListDetails = ({place, selected, refProp}) => {
+
+  if(selected) refProp?.current?.scrollIntoView({ behavior: 'smooth', block: 'start'});
+
   return (
     <div className='font-content max-w-full p-2 my-3 border rounded md:mr-3' id={place?.location_id}>
         <img src={place.photo ? place.photo.images.large.url : 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'} alt={place.name} className="md:w-[400]" />
